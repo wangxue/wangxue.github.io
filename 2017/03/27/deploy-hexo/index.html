@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>部署hexo博客 | Hexo | null</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="这个博客是由hexo生成的静态博客，使用indigo主题，部署在github page上，此处记录完整的部署过程。
+安装node.js和git和hexo此处可以参考hexo官方wiki，https://hexo.io/zh-cn/docs/index.html
+生成博客并托管参考https://hexo.io/zh-cn/docs/setup.html需要注意的是由于我们可能在多台电脑操作，或者哪">
+<meta property="og:type" content="article">
+<meta property="og:title" content="部署hexo博客">
+<meta property="og:url" content="http://yoursite.com/2017/03/27/deploy-hexo/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="这个博客是由hexo生成的静态博客，使用indigo主题，部署在github page上，此处记录完整的部署过程。
+安装node.js和git和hexo此处可以参考hexo官方wiki，https://hexo.io/zh-cn/docs/index.html
+生成博客并托管参考https://hexo.io/zh-cn/docs/setup.html需要注意的是由于我们可能在多台电脑操作，或者哪">
+<meta property="og:updated_time" content="2017-03-27T06:12:29.541Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="部署hexo博客">
+<meta name="twitter:description" content="这个博客是由hexo生成的静态博客，使用indigo主题，部署在github page上，此处记录完整的部署过程。
+安装node.js和git和hexo此处可以参考hexo官方wiki，https://hexo.io/zh-cn/docs/index.html
+生成博客并托管参考https://hexo.io/zh-cn/docs/setup.html需要注意的是由于我们可能在多台电脑操作，或者哪">
+    
+        <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.14">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">John Doe</h5>
+          <a href="mailto:634206017@qq.com" title="634206017@qq.com" class="mail">634206017@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                Archives
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                Tags
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                Categories
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/yscoder" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://www.weibo.com/ysweb" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/custom"  >
+                <i class="icon icon-lg icon-link"></i>
+                测试
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">部署hexo博客</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">部署hexo博客</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-26T16:08:23.000Z" itemprop="datePublished" class="page-time">
+  2017-03-27
+</time>
+
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#安装node-js和git和hexo"><span class="post-toc-number">1.</span> <span class="post-toc-text">安装node.js和git和hexo</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#生成博客并托管"><span class="post-toc-number">2.</span> <span class="post-toc-text">生成博客并托管</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#切换主题为indigo"><span class="post-toc-number">3.</span> <span class="post-toc-text">切换主题为indigo</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#部署静态网页"><span class="post-toc-number">4.</span> <span class="post-toc-text">部署静态网页</span></a></li><li class="post-toc-item post-toc-level-3"><a class="post-toc-link" href="#遇到的问题"><span class="post-toc-number">5.</span> <span class="post-toc-text">遇到的问题</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-deploy-hexo"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">部署hexo博客</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年03月27日 0:08" datetime="2017-03-26T16:08:23.000Z"  itemprop="datePublished">2017-03-27</time>
+
+            
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>这个博客是由hexo生成的静态博客，使用indigo主题，部署在github page上，此处记录完整的部署过程。</p>
+<h3 id="安装node-js和git和hexo"><a href="#安装node-js和git和hexo" class="headerlink" title="安装node.js和git和hexo"></a>安装node.js和git和hexo</h3><p>此处可以参考hexo官方wiki，<a href="https://hexo.io/zh-cn/docs/index.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/index.html</a></p>
+<h3 id="生成博客并托管"><a href="#生成博客并托管" class="headerlink" title="生成博客并托管"></a>生成博客并托管</h3><p>参考<a href="https://hexo.io/zh-cn/docs/setup.html" target="_blank" rel="external">https://hexo.io/zh-cn/docs/setup.html</a><br>需要注意的是由于我们可能在多台电脑操作，或者哪天本地hexo环境破坏，会比较麻烦，所以我将整个hexo project作为一个git库管理，并且托管到github上<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div></pre></td><td class="code"><pre><div class="line">cd &lt;folder&gt;</div><div class="line">git init</div><div class="line">git add . --all</div><div class="line">git commit -m &quot;init hexo&quot;</div><div class="line">git add remote origin git@github.com:wangxue.github.com.source</div><div class="line">git push origin master</div></pre></td></tr></table></figure></p>
+<h3 id="切换主题为indigo"><a href="#切换主题为indigo" class="headerlink" title="切换主题为indigo"></a>切换主题为indigo</h3><p>参考<a href="https://github.com/yscoder/hexo-theme-indigo/wiki/%E5%AE%89%E8%A3%85" target="_blank" rel="external">https://github.com/yscoder/hexo-theme-indigo/wiki/%E5%AE%89%E8%A3%85</a><br>需要注意的是我们的hexo文件夹本身也是一个git仓库，然后这个themes文件夹中的indigo只能作为一个git submodule<br>那么在下载indigo主题时，需要采用git submodule的方式来操作<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">git add submodule git@github.com:yscoder/hexo-theme-indigo.git themes/indigo themes/indigo</div></pre></td></tr></table></figure></p>
+<p>将来我们在其他电脑上下载自己的博客代码后，同时也需要更新子模块<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div></pre></td><td class="code"><pre><div class="line">git clone git@github.com:wangxue.github.io.source hexo-source</div><div class="line">cd hexo-source</div><div class="line">git submodule update --init --recursive</div></pre></td></tr></table></figure></p>
+<h3 id="部署静态网页"><a href="#部署静态网页" class="headerlink" title="部署静态网页"></a>部署静态网页</h3><p>参考<a href="https://hexo.io/zh-cn/docs/" target="_blank" rel="external">https://hexo.io/zh-cn/docs/</a></p>
+<h3 id="遇到的问题"><a href="#遇到的问题" class="headerlink" title="遇到的问题"></a>遇到的问题</h3><ol>
+<li>ssh -t git@github.com时显示permission denied<br><a href="http://blog.csdn.net/sunnypotter/article/details/18948053/" target="_blank" rel="external">私钥文件名不对导致</a></li>
+<li>如何删除文章：<br>执行hexo clean，在_post中删除文章，执行hexo -g d重新部署</li>
+<li>编译时报错<br>报错如下<figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div></pre></td><td class="code"><pre><div class="line">04:50:25.815 FATAL Something&apos;s wrong. Maybe you can find the solution here: http://hexo.io/docs/troubleshooting.html</div><div class="line">Template render error: (unknown path) [Line 7, Column 23]</div><div class="line">  Error: Unable to call `the return value of (posts[&quot;first&quot;])[&quot;updated&quot;][&quot;toISOString&quot;]`, which is undefined or falsey</div><div class="line">    at Object.exports.prettifyError (C:\source\github\wangxue.github.io.source\node_modules\nunjucks\src\lib.js:34:15)</div><div class="line">    at C:\source\github\wangxue.github.io.source\node_modules\nunjucks\src\environment.js:486:31</div><div class="line">    at new_cls.root [as rootRenderFunc] (eval at _compile (C:\source\github\wangxue.github.io.source\node_modules\nunjucks\src\environment.js:565:24), &lt;anonymous&gt;:161:3)</div><div class="line">    at new_cls.render (C:\source\github\wangxue.github.io.source\node_modules\nunjucks\src\environment.js:479:15)</div><div class="line">    at Hexo.module.exports (C:\source\github\wangxue.github.io.source\node_modules\hexo-generator-feed\lib\generator.js:28:22)</div><div class="line">    at Hexo.tryCatcher (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\util.js:16:23)</div><div class="line">    at Hexo.&lt;anonymous&gt; (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\method.js:15:34)</div><div class="line">    at C:\source\github\wangxue.github.io.source\node_modules\hexo\lib\hexo\index.js:337:24</div><div class="line">    at tryCatcher (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\util.js:16:23)</div><div class="line">    at MappingPromiseArray._promiseFulfilled (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\map.js:61:38)</div><div class="line">    at MappingPromiseArray.PromiseArray._iterate (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\promise_array.js:114:31)</div><div class="line">    at MappingPromiseArray.init (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\promise_array.js:78:10)</div><div class="line">    at MappingPromiseArray._asyncInit (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\map.js:30:10)</div><div class="line">    at Async._drainQueue (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\async.js:138:12)</div><div class="line">    at Async._drainQueues (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\async.js:143:10)</div><div class="line">    at Immediate.Async.drainQueues (C:\source\github\wangxue.github.io.source\node_modules\bluebird\js\release\async.js:17:14)</div><div class="line">    at runCallback (timers.js:666:20)</div><div class="line">    at tryOnImmediate (timers.js:639:5)</div><div class="line">    at processImmediate [as _immediateCallback] (timers.js:611:5)</div></pre></td></tr></table></figure>
+</li>
+</ol>
+<p>搜索后发现暂时无解<a href="https://github.com/hexojs/hexo-generator-feed/issues/43" target="_blank" rel="external">https://github.com/hexojs/hexo-generator-feed/issues/43</a><br>屏蔽该插件即可，注意不是按照网友说的在_config.yml中屏蔽，而是直接卸载该模块，之后可以通过执行hexo config查看feed配置项是否还在<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><div class="line">1</div></pre></td><td class="code"><pre><div class="line">npm uninstall hexo-generator-feed --save</div></pre></td></tr></table></figure></p>
+<p>需要注意的是在安装hexo的插件时不要用-g参数，而是使用hexo.io及各主题教程中的安装命令，安装的模块位于hexo项目内，hexo generate时才可以引用到，否则会出现异常。</p>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-03-27T06:12:29.541Z" itemprop="dateUpdated">2017年3月27日 14:12</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/03/27/deploy-hexo/" target="_blank" rel="external">http://yoursite.com/2017/03/27/deploy-hexo/</a>
+    </div>
+    <footer>
+        <a href="http://yoursite.com">
+            <img src="/img/avatar.jpg" alt="John Doe">
+            John Doe
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/03/27/deploy-hexo/&title=《部署hexo博客》 — Hexo&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/03/27/deploy-hexo/&title=《部署hexo博客》 — Hexo&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/03/27/deploy-hexo/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《部署hexo博客》 — Hexo&url=http://yoursite.com/2017/03/27/deploy-hexo/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/03/27/deploy-hexo/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="deploy-hexo" data-title="部署hexo博客" data-url="http://yoursite.com/2017/03/27/deploy-hexo/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.14');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Hexo &copy; 2015 - 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://yoursite.com/2017/03/27/deploy-hexo/&title=《部署hexo博客》 — Hexo&pic=http://yoursite.com/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://yoursite.com/2017/03/27/deploy-hexo/&title=《部署hexo博客》 — Hexo&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://yoursite.com/2017/03/27/deploy-hexo/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《部署hexo博客》 — Hexo&url=http://yoursite.com/2017/03/27/deploy-hexo/&via=http://yoursite.com" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://yoursite.com/2017/03/27/deploy-hexo/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJklEQVR42u3a207EMAwFQP7/p4vEExJ09zjOItaZPFUFtZkiGV/y8RGv62t9v/555+6n+f2739m2MDAw3pZxPVzJy65N6/FHeULFwMA4gJEE2dcF3OS9T/aMgYGB8TDY7Q21GBgYGH1GNTRXrzEwMDA6RewaLwmsjxmba3EMDIw3ZKwNBv7m+uXzDQwMjH/P6JedeYrZH2re7gQDA2M0o9NWy1PGaqq32IbDwMA4hlFN2nJYdUhZ/n0MDIzDGHvb+tX7eejHwMDAyMPx4tCxuPUnwRcDA2Moo9pKSwJfJ8jmz/zl74CBgXEMozNQvLau5NNgYGCcwFjb6N77eUncKmIxMDDellEdHO4dT1aL59snYGBgHMOoruoxr06j7UmAxsDAGM1IHtcpcdeK0rV/AxgYGLMZi4cb1irm4tC0uh8MDIx5jLxQ7B//SoJ1fmgjKmIxMDAGMaqvLxSWS3PGzYctMDAwRjDywxPVArWPbKWGGBgYIxidoxXVcLyWYq6VwRgYGJMY1Q1Vy91Oq66wHwwMjNGMaostSRmTIJs/JxkbYGBgzGZcxZWXuNVGf/4Joq4hBgbGIEa+qoE1SUA7x84wMDBOYyRBttrDS8rjTsAtlK8YGBiDGElil48Yq+OBPOiXj1xgYGAcydibDibNuEJqiIGBcTwjv147ZtEJ7hgYGCcw8iI2HxXkzf3+p8HAwJjNWDvicPeCaombbChPSTEwMMYxPgHSLlvR57njxQAAAABJRU5ErkJggg==" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.14"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.14" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
