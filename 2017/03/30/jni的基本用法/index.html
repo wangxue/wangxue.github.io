@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+
+    
+
+    
+
+
+
+    <meta charset="utf-8">
+    
+    
+    
+    <title>jni的基本用法 | Hexo | null</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    
+    <meta name="theme-color" content="#3F51B5">
+    
+    
+    <meta name="keywords" content="">
+    <meta name="description" content="jni技术用于实现java与c/c++代码之间的连接,在android平台中被大量运用,比如
+
+本地代码启动java虚拟机，创建java的运行环境，如进程zygote启动后创建java虚拟机
+系统服务多用c/c++实现，在其中通过jni提供接口供java代码调用
+
+下面主要讲述jni在常见场景下的使用方法，如java应用如何调用本地库函数，本地库函数如何调用java代码，在c程序中如何创建java">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jni的基本用法">
+<meta property="og:url" content="http://wangxue.github.io/2017/03/30/jni的基本用法/index.html">
+<meta property="og:site_name" content="Hexo">
+<meta property="og:description" content="jni技术用于实现java与c/c++代码之间的连接,在android平台中被大量运用,比如
+
+本地代码启动java虚拟机，创建java的运行环境，如进程zygote启动后创建java虚拟机
+系统服务多用c/c++实现，在其中通过jni提供接口供java代码调用
+
+下面主要讲述jni在常见场景下的使用方法，如java应用如何调用本地库函数，本地库函数如何调用java代码，在c程序中如何创建java">
+<meta property="og:updated_time" content="2017-03-31T14:27:20.443Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jni的基本用法">
+<meta name="twitter:description" content="jni技术用于实现java与c/c++代码之间的连接,在android平台中被大量运用,比如
+
+本地代码启动java虚拟机，创建java的运行环境，如进程zygote启动后创建java虚拟机
+系统服务多用c/c++实现，在其中通过jni提供接口供java代码调用
+
+下面主要讲述jni在常见场景下的使用方法，如java应用如何调用本地库函数，本地库函数如何调用java代码，在c程序中如何创建java">
+    
+        <link rel="alternative" href="/atom.xml" title="Hexo" type="application/atom+xml">
+    
+    <link rel="shortcut icon" href="/favicon.ico">
+    <link rel="stylesheet" href="/css/style.css?v=1.4.14">
+    <script>window.lazyScripts=[]</script>
+</head>
+
+<body>
+    <div id="loading" class="active"></div>
+
+    <aside id="menu" class="hide" >
+  <div class="inner flex-row-vertical">
+    <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menu-off">
+        <i class="icon icon-lg icon-close"></i>
+    </a>
+    <div class="brand-wrap">
+      <div class="brand">
+        <a href="/" class="avatar waves-effect waves-circle waves-light">
+          <img src="/img/avatar.jpg">
+        </a>
+        <hgroup class="introduce">
+          <h5 class="nickname">wangxue</h5>
+          <a href="mailto:309776352@qq.com" title="309776352@qq.com" class="mail">309776352@qq.com</a>
+        </hgroup>
+      </div>
+    </div>
+    <div class="scroll-wrap flex-col">
+      <ul class="nav">
+        
+            <li class="waves-block waves-effect">
+              <a href="/"  >
+                <i class="icon icon-lg icon-home"></i>
+                主页
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/archives"  >
+                <i class="icon icon-lg icon-archives"></i>
+                归档
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/tags"  >
+                <i class="icon icon-lg icon-tags"></i>
+                标签
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="/categories"  >
+                <i class="icon icon-lg icon-th-list"></i>
+                分类
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="https://github.com/wangxue" target="_blank" >
+                <i class="icon icon-lg icon-github"></i>
+                Github
+              </a>
+            </li>
+        
+            <li class="waves-block waves-effect">
+              <a href="http://weibo.com/u/1833725693" target="_blank" >
+                <i class="icon icon-lg icon-weibo"></i>
+                Weibo
+              </a>
+            </li>
+        
+      </ul>
+    </div>
+  </div>
+</aside>
+
+    <main id="main">
+        <header class="top-header" id="header">
+    <div class="flex-row">
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light on" id="menu-toggle">
+          <i class="icon icon-lg icon-navicon"></i>
+        </a>
+        <div class="flex-col header-title ellipsis">jni的基本用法</div>
+        
+        <div class="search-wrap" id="search-wrap">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="back">
+                <i class="icon icon-lg icon-chevron-left"></i>
+            </a>
+            <input type="text" id="key" class="search-input" autocomplete="off" placeholder="输入感兴趣的关键字">
+            <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="search">
+                <i class="icon icon-lg icon-search"></i>
+            </a>
+        </div>
+        
+        
+        <a href="javascript:;" class="header-icon waves-effect waves-circle waves-light" id="menuShare">
+            <i class="icon icon-lg icon-share-alt"></i>
+        </a>
+        
+    </div>
+</header>
+<header class="content-header post-header">
+
+    <div class="container fade-scale">
+        <h1 class="title">jni的基本用法</h1>
+        <h5 class="subtitle">
+            
+                <time datetime="2017-03-30T06:38:31.019Z" itemprop="datePublished" class="page-time">
+  2017-03-30
+</time>
+
+
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/android/">android</a></li></ul>
+
+            
+        </h5>
+    </div>
+
+    
+
+</header>
+
+
+<div class="container body-wrap">
+    
+    <aside class="post-widget">
+        <nav class="post-toc-wrap" id="post-toc">
+            <h4>TOC</h4>
+            <ol class="post-toc"><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在java中调用c库函数"><span class="post-toc-number">1.</span> <span class="post-toc-text">在java中调用c库函数</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在c库函数中调用java代码"><span class="post-toc-number">2.</span> <span class="post-toc-text">在c库函数中调用java代码</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在c程序中创建java运行环境"><span class="post-toc-number">3.</span> <span class="post-toc-text">在c程序中创建java运行环境</span></a></li><li class="post-toc-item post-toc-level-2"><a class="post-toc-link" href="#在c程序中注册jni本地函数"><span class="post-toc-number">4.</span> <span class="post-toc-text">在c程序中注册jni本地函数</span></a></li></ol>
+        </nav>
+    </aside>
+    
+<article id="post-jni的基本用法"
+  class="post-article article-type-post fade" itemprop="blogPost">
+
+    <div class="post-card">
+        <h1 class="post-card-title">jni的基本用法</h1>
+        <div class="post-meta">
+            <time class="post-time" title="2017年03月30日 14:38" datetime="2017-03-30T06:38:31.019Z"  itemprop="datePublished">2017-03-30</time>
+
+            
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/android/">android</a></li></ul>
+
+
+
+            
+<span id="busuanzi_container_page_pv" title="文章总阅读量" style='display:none'>
+    <i class="icon icon-eye icon-pr"></i><span id="busuanzi_value_page_pv"></span>
+</span>
+
+
+            
+
+        </div>
+        <div class="post-content" id="post-content" itemprop="postContent">
+            <p>jni技术用于实现java与c/c++代码之间的连接,在android平台中被大量运用,比如</p>
+<ul>
+<li>本地代码启动java虚拟机，创建java的运行环境，如进程zygote启动后创建java虚拟机</li>
+<li>系统服务多用c/c++实现，在其中通过jni提供接口供java代码调用</li>
+</ul>
+<p>下面主要讲述jni在常见场景下的使用方法，如java应用如何调用本地库函数，本地库函数如何调用java代码，在c程序中如何创建java虚拟机执行java代码。同时也提到如何注册jni本地函数，建立java本地方法和本地库函数之间的映射以加快运行效率。</p>
+<h2 id="在java中调用c库函数"><a href="#在java中调用c库函数" class="headerlink" title="在java中调用c库函数"></a>在java中调用c库函数</h2><ol>
+<li><p>编写java代码，其中需要本地实现的方法用native修饰</p>
+<pre><code>class Hello{
+    native void printHello();
+    static {
+        System.loadLibrary(&quot;Hello&quot;);
+    }
+    public static void main(String[] args){
+        Hello hello = new Hello();
+        hello.printHello();
+    }
+}
+</code></pre></li>
+<li><p>编译java文件为class文件</p>
+<pre><code>$ javac Hello.java
+</code></pre></li>
+<li><p>根据java文件生成c语言头文件</p>
+<pre><code>$ javah Hello
+</code></pre><p> 此时会生成相应的c语言头文件Hello.h</p>
+<pre><code>/* DO NOT EDIT THIS FILE - it is machine generated */
+#include &lt;jni.h&gt;
+/* Header for class Hello */
+
+#ifndef _Included_Hello
+#define _Included_Hello
+#ifdef __cplusplus
+extern &quot;C&quot; {
+#endif
+/*
+ * Class:     Hello
+ * Method:    printHello
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_Hello_printHello
+  (JNIEnv *, jobject);
+
+#ifdef __cplusplus
+}
+#endif
+#endif
+</code></pre><p> 自动生成的本地函数名是有规则的，其中JNIEXPORT JNICALL关键字都是在jni.h头文件注册的宏，函数名格式为Java<em>类名</em>本地方法名，这样在加载本地函数库时系统可以找到java本地方法对应的本地函数。</p>
+<p> 在生成的函数原型中带有两个默认参数，第一个JNIEnv*类型参数是jni接口的指针，用来调用jni表中的各种函数，第二个参数jobject类型参数指的是调用本地方法的对象的引用。如果java本地方法为static类型，则第二个参数为jclass类型。</p>
+</li>
+<li><p>编写c代码，Hello.c<br>实现头文件中的方法即可，注意添加参数名</p>
+<pre><code>#include &quot;Hello.h&quot;
+#include &lt;stdio.h&gt;
+
+/*
+ * Class:     Hello
+ * Method:    printHello
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_Hello_printHello
+  (JNIEnv *env, jobject obj){
+    printf(&quot;Hello World!\n&quot;);
+}
+</code></pre></li>
+<li><p>生成共享库</p>
+<pre><code>$ gcc -I/usr/lib/jvm/java-7-oracle/include -I/usr/lib/jvm/java-7-oracle/include/linux -fPIC -shared -o libHello.so Hello.c
+</code></pre><p> 此处用-I选项指定头文件jni.h位置，最终编译生成libHello.so文件。</p>
+</li>
+<li><p>运行java程序，查看结果</p>
+<pre><code>$ java -Djava.library.path=. Hello
+Hello World!
+</code></pre><p> 此处Hello.class类执行时需要用-D选项指定动态库的路径。</p>
+</li>
+</ol>
+<h2 id="在c库函数中调用java代码"><a href="#在c库函数中调用java代码" class="headerlink" title="在c库函数中调用java代码"></a>在c库函数中调用java代码</h2><p>先写一个Main.java类，该类会调用本地库libmain.so中的库函数，在该库函数中演示如下操作：</p>
+<ul>
+<li>创建java对象</li>
+<li>访问java类静态变量</li>
+<li>访问java类静态方法</li>
+<li>访问java对象的变量</li>
+<li>访问java对象的方法</li>
+</ul>
+<ol>
+<li><p>编写Main类，代码很简单，就是调用c库函数</p>
+<pre><code>class Main{
+    static native void main();
+    public static void main(String args[]) {
+        System.loadLibrary(&quot;main&quot;);
+        main();
+    }
+}
+</code></pre></li>
+<li><p>按照javah工具生成Main.h文件，实现本地函数</p>
+<p> 我们需要在Main.c文件中实现头文件中声明的JNICALL Java_Main_main方法，由于对应的java方法被static修饰，所以此处的第二个函数参数为jclass类型。</p>
+<pre><code>#include &quot;Main.h&quot;
+#include &lt;stdio.h&gt;
+
+JNIEXPORT void JNICALL Java_Main_main(JNIEnv *env, jclass clazz){
+
+    // 查找JniTest类
+    jclass targetClass = (*env)-&gt;FindClass(env, &quot;JniTest&quot;); 
+    // 查找JniTest类的构造方法
+    jmethodID constructorId = (*env)-&gt;GetMethodID(env, targetClass, &quot;&lt;init&gt;&quot;, &quot;(I)V&quot;);
+    // 1.生成JniTest对象
+    jobject newObject = (*env)-&gt;NewObject(env, targetClass, constructorId, 100);
+    printf(&quot;initiate JniTest object.\n&quot;);
+
+    // 2.获取JniTest类的静态变量
+    jfieldID staticFieldId = (*env)-&gt;GetStaticFieldID(env, targetClass, &quot;var1&quot;, &quot;I&quot;);
+    jint var1 = (*env)-&gt;GetStaticIntField(env, targetClass, staticFieldId);
+    // 3.获取JniTest类的普通变量
+    jfieldID fieldId = (*env)-&gt;GetFieldID(env, targetClass, &quot;var2&quot;, &quot;I&quot;);
+    jint var2 = (*env)-&gt;GetIntField(env, targetClass, fieldId);
+    printf(&quot;var1: %d , var2: %d\n&quot;, var1, var2);
+
+    // 4.调用JniTest类的静态方法
+    jmethodID staticMethodId = (*env)-&gt;GetStaticMethodID(env, targetClass, &quot;getVar1&quot;,  &quot;()I&quot;);
+    jint var11 = (*env)-&gt;CallIntMethod(env, newObject, staticMethodId);
+    // 5.调用JniTest类的普通方法
+    jmethodID methodId = (*env)-&gt;GetMethodID(env, targetClass, &quot;getVar2&quot;,  &quot;()I&quot;);
+    jint var22 = (*env)-&gt;CallIntMethod(env, newObject, methodId);
+    printf(&quot;var1: %d , var2: %d\n&quot;, var11, var22);
+
+}
+</code></pre></li>
+<li><p>编译运行效果</p>
+<pre><code>$ javac Main.java
+$ gcc -I/usr/lib/jvm/java-7-oracle/include -I/usr/lib/jvm/java-7-oracle/include/linux -fPIC -shared -o libmain.so Main.c
+$ java -Djava.library.path=. Main
+initiate JniTest object.
+var1: 1 , var2: 0
+var1: 1 , var2: 100
+</code></pre></li>
+</ol>
+<p>通过上述代码可以看到，Jni接口指针定义了一系列的查找class，实例化object，查找id，获取/设置field，调用method的方法，例如</p>
+<pre><code>jclass FindClass(JNIEnv *env, const char *name)
+jobject NewObject(JNIEnv *env, jclass clazz, jmethodID methodID, ...)
+jfieldID GetFieldID(JNIEnv *env, jclass clazz, const char *name, const char *signature)
+jmethodID GetMethodID(JNIEnv *env, jclass clazz, const char *name, const char *signature)
+&lt;jnitype&gt; Get&lt;type&gt;Field(JNIEnv *env, jobject obj, jfieldID fieldID)
+void Set&lt;Type&gt;Field(JNIEnv *env, jobject obj, jfeildID feildID, &lt;type&gt; value)
+&lt;jnitype&gt; Call&lt;type&gt;Method(JNIEnv *env, jobject obj, jmethodId methodID, ...)
+</code></pre><p>在调用jni函数时，c与c++调用方式略有不同，例如</p>
+<pre><code>jclass clazz = (*env)-&gt;FindClass(env, &quot;JniTest&quot;);   // c风格
+jclass clazz = env-&gt;FindClass(&quot;JniTest&quot;);   // c++风格
+</code></pre><p>在查找id时需要传入java成员变量或者方法的signature，用于描述方法的返回值和参数，可以通过javap命令获取</p>
+<pre><code>$javap -s -p JniTest
+Compiled from &quot;JniTest.java&quot;
+class JniTest {
+  private static int var1;
+    Signature: I
+  private int var2;
+    Signature: I
+  public JniTest(int);
+    Signature: (I)V
+
+  public static int getVar1();
+    Signature: ()I
+
+  public void setVar2(int);
+    Signature: (I)V
+
+  public int getVar2();
+    Signature: ()I
+
+  static {};
+    Signature: ()V
+}
+</code></pre><h2 id="在c程序中创建java运行环境"><a href="#在c程序中创建java运行环境" class="headerlink" title="在c程序中创建java运行环境"></a>在c程序中创建java运行环境</h2><p>jni提供了一套Invocation api允许c/c++程序在自身内存区域加载java虚拟机，创建java运行环境。在android系统中，zygote进程(即app_process)正是通过该方式启动第一个java虚拟机。</p>
+<p>先编写本地程序invocation，其代码invocaiotn.c如下</p>
+<pre><code>#include &lt;jni.h&gt;
+
+int main() {
+    JNIEnv *env;
+    JavaVM *vm;
+    JavaVMInitArgs vm_args;
+    JavaVMOption options[1];
+    jint res;
+    jclass cls;
+    jmethodID mid;
+    jstring jstr;
+    jclass stringClass;
+    jobjectArray args;
+
+    // 1.生成java虚拟机选项
+    options[0].optionString = &quot;-Djava.class.path=.&quot;;
+    vm_args.version = JNI_VERSION_1_2;
+    vm_args.options = options;
+    vm_args.nOptions = 1;
+    vm_args.ignoreUnrecognized = JNI_TRUE;
+
+    // 2.生成java虚拟机
+    res = JNI_CreateJavaVM(&amp;vm, (void**)&amp;env, &amp;vm_args);
+
+    // 3.查找java类
+    cls = (*env)-&gt;FindClass(env, &quot;Demo&quot;);
+
+    // 4.获取java类中的main方法id
+    mid = (*env)-&gt;GetStaticMethodID(env, cls, &quot;main&quot;, &quot;([Ljava/lang/String;)V&quot;);
+
+    // 5.生成字符串对象，用做main方法的参数
+    jstr = (*env)-&gt;NewStringUTF(env, &quot;Hello World!&quot;);
+    stringClass = (*env)-&gt;FindClass(env, &quot;java/lang/String&quot;);
+    args = (*env)-&gt;NewObjectArray(env, 1, stringClass, jstr);
+
+    // 6.调用main方法
+    (*env)-&gt;CallStaticVoidMethod(env, cls, mid, args);
+
+    // 7.销毁虚拟机
+    (*vm)-&gt;DestroyJavaVM(vm);
+}
+</code></pre><p>编译的时候需要jni.h头文件，同时需要链接libjvm.so库，具体编译指令如下</p>
+<pre><code>$ gcc -o invocation invocation.c -I/usr/lib/jvm/java-7-oracle/include -I/usr/lib/jvm/java-7-oracle/include/linux -L/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server -ljvm
+</code></pre><p>注意gcc在处理符号链接的时候如果发现处理到-l参数时该库文件没有被左边的参数使用，则会忽略该-l参数，所以最好将-l参数放到最后，避免出现链接错误[undefined reference to `JNI_CreateJavaVM’ linux] (<a href="http://stackoverflow.com/questions/16860021/undefined-reference-to-jni-createjavavm-linux" target="_blank" rel="external">http://stackoverflow.com/questions/16860021/undefined-reference-to-jni-createjavavm-linux</a>)</p>
+<p>如下是需要调用的java类</p>
+<pre><code>class Demo {
+    public static void main(String args[]) {
+        System.out.println(args[0]);
+    }
+}
+</code></pre><p>编译java类后，我们就可以执行invocation程序看一下效果</p>
+<pre><code>$ export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:/usr/lib/jvm/java-7-oracle/jre/lib/amd64/server
+$ ./invocation
+Hello World!
+</code></pre><h2 id="在c程序中注册jni本地函数"><a href="#在c程序中注册jni本地函数" class="headerlink" title="在c程序中注册jni本地函数"></a>在c程序中注册jni本地函数</h2><p>java虚拟机在运行包含本地方法的java应用程序时，需要经过如下步骤</p>
+<ul>
+<li>调用System.loadLibrary()方法，将运行库加载到内存中</li>
+<li>java虚拟机检索加载进来的库函数符号，在其中查找与java本地方法拥有相同签名的jni本地函数符号。若找到一致的，则将本地方法映射到具体的JNI本地函数。</li>
+</ul>
+<p>jni机制提供了名称为RegisterNatives()jni函数，允许c/c++开发者将jni本地函数和java类的本地方法直接映射在一起，提升运行效率。</p>
+<ol>
+<li><p>加载本地库时注册jni本地函数</p>
+<p> 在java代码中调用System.loadLibrary()方法时，java虚拟机加载指定的共享库后会检索共享库内的函数符号，检查JNI_OnLoad()函数是否被实现，是则进行调用，否则自动将本地方法与共享库内的jni本地函数符号进行比较匹配。</p>
+<p> JNI_OnLoad()函数最基本的功能为确定java虚拟机支持的jni版本，因此该函数必须返回有关jni版本的信息。如下代码为本地代码重写JNI_OnLoad()方法</p>
+<pre><code>#include &lt;jni.h&gt;
+#include &lt;stdio.h&gt;
+
+// 实现本地函数
+void printHelloNative() {
+    printf(&quot;Hello World!\n&quot;);
+}
+
+JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+    JNIEnv* env = NULL;
+    JNINativeMethod nm[1];
+    jclass cls;
+
+    if((*vm)-&gt;GetEnv(vm, (void*)&amp;env, JNI_VERSION_1_4) != JNI_OK) {
+        printf(&quot;Error!&quot;);
+        return JNI_ERR;
+    }
+
+    cls = (*env)-&gt;FindClass(env, &quot;Hello&quot;);
+    nm[0].name = &quot;printHello&quot;;
+    nm[0].signature = &quot;()V&quot;;
+    nm[0].fnPtr = (void *)printHelloNative;
+
+    // 将Hello.java类中的printHello方法与本地函数printHelloNative绑定
+    (*env)-&gt;RegisterNatives(env, cls, nm, 1);
+
+    return JNI_VERSION_1_4;
+}
+</code></pre><p> 按照如下命令编译为libmain.so库文件</p>
+<pre><code>$ gcc -fpic -shared -o libmain.so Main.c -I/usr/lib/jvm/java-7-oracle/include -I/usr/lib/jvm/java-7-oracle/include/linux
+</code></pre><p> 如下为Hello.java类</p>
+<pre><code>class Hello {
+    native static void printHello();
+    static { System.loadLibrary(&quot;main&quot;); }
+
+    public static void main(String args[]) {
+        printHello();
+    }
+}
+</code></pre><p> 编译后运行可以看到成功找到本地函数</p>
+<pre><code>$ java -Djava.library.path=. Hello
+Hello World!
+</code></pre></li>
+<li><p>在c程序中注册jni本地函数</p>
+<p> 如果开发者在c语言中通过invocation api调用java代码，则不必重写JNI_OnLoad()方法，可以直接调用RegisterNatives()方法完成JNI本地函数与JNI本地方法之间的映射。</p>
+<p> android系统中zygote进程启动过程(由frameworks/base/cmds/app_prosss/app_main.cpp中main方法调用frameworks/base/core/jni/AndroidRuntime.cpp的AndroidRuntime::start方法实现)中，在启动vm后会先调用AndroidRuntime::startReg(JNIEnv* env)方法将android framework中使用到的各种本地方法先注册，之后才调用com.android.internal.os.ZygoteInit.java类的main方法。</p>
+<p> 跟踪startReg方法可以看到最终是通过类似如下代码将本地函数与java本地方法建立映射</p>
+<pre><code>int register_com_android_internal_os_RuntimeInit(JNIEnv* env)
+{
+    return jniRegisterNativeMethods(env, &quot;com/android/internal/os/RuntimeInit&quot;,
+        gMethods, NELEM(gMethods));
+}
+</code></pre><p> 其中jniRegisterNativeMethods方法位于libnativehelper/JNIHelp.cpp中，最终还是通过调用RegisterNatives方法完成注册。</p>
+<pre><code>extern &quot;C&quot; int jniRegisterNativeMethods(C_JNIEnv* env, const char* className,
+    const JNINativeMethod* gMethods, int numMethods)
+{
+    // ...
+
+    if ((*env)-&gt;RegisterNatives(e, c.get(), gMethods, numMethods) &lt; 0) {
+        char* msg;
+        asprintf(&amp;msg, &quot;RegisterNatives failed for &apos;%s&apos;; aborting...&quot;, className);
+        e-&gt;FatalError(msg);
+    }
+
+    return 0;
+}
+</code></pre></li>
+</ol>
+
+        </div>
+
+        <blockquote class="post-copyright">
+    <div class="content">
+        
+<span class="post-time">
+    最后更新时间：<time datetime="2017-03-31T14:27:20.443Z" itemprop="dateUpdated">2017年3月31日 22:27</time>
+</span><br>
+
+
+        这里写留言或版权声明：<a href="/2017/03/30/jni的基本用法/" target="_blank" rel="external">http://wangxue.github.io/2017/03/30/jni的基本用法/</a>
+    </div>
+    <footer>
+        <a href="http://wangxue.github.io">
+            <img src="/img/avatar.jpg" alt="wangxue">
+            wangxue
+        </a>
+    </footer>
+</blockquote>
+
+        
+<div class="page-reward">
+    <a id="rewardBtn" href="javascript:;" class="page-reward-btn waves-effect waves-circle waves-light">赏</a>
+</div>
+
+
+
+        <div class="post-footer">
+            
+
+            
+<div class="page-share-wrap">
+    
+
+<div class="page-share" id="pageShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://wangxue.github.io/2017/03/30/jni的基本用法/&title=《jni的基本用法》 — Hexo&pic=http://wangxue.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://wangxue.github.io/2017/03/30/jni的基本用法/&title=《jni的基本用法》 — Hexo&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://wangxue.github.io/2017/03/30/jni的基本用法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《jni的基本用法》 — Hexo&url=http://wangxue.github.io/2017/03/30/jni的基本用法/&via=http://wangxue.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://wangxue.github.io/2017/03/30/jni的基本用法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+
+    <a href="javascript:;" id="shareFab" class="page-share-fab waves-effect waves-circle">
+        <i class="icon icon-share-alt icon-lg"></i>
+    </a>
+</div>
+
+
+
+        </div>
+    </div>
+
+    
+<nav class="post-nav flex-row flex-justify-between">
+  
+    <div class="waves-block waves-effect prev">
+      <a href="/2017/03/31/桌面插件/" id="post-prev" class="post-nav-link">
+        <div class="tips"><i class="icon icon-angle-left icon-lg icon-pr"></i> Prev</div>
+        <h4 class="title">AppWidget的显示和更新</h4>
+      </a>
+    </div>
+  
+
+  
+    <div class="waves-block waves-effect next">
+      <a href="/2017/03/27/deploy-hexo/" id="post-next" class="post-nav-link">
+        <div class="tips">Next <i class="icon icon-angle-right icon-lg icon-pl"></i></div>
+        <h4 class="title">部署hexo博客</h4>
+      </a>
+    </div>
+  
+</nav>
+
+
+
+    
+
+<div class="comments" id="comments">
+    <div class="ds-thread" data-thread-key="jni的基本用法" data-title="jni的基本用法" data-url="http://wangxue.github.io/2017/03/30/jni的基本用法/"></div>
+</div>
+<script>
+lazyScripts.push('//cdn.bootcss.com/marked/0.3.6/marked.min.js');
+
+var duoshuoQuery = {short_name:'ysblog', theme: 'none'};
+lazyScripts.push('/js/embed.min.js?v=1.4.14');
+
+
+</script>
+
+
+
+
+
+
+
+</article>
+
+<div id="reward" class="page-modal reward-lay">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <h3 class="reward-title">
+        <i class="icon icon-quote-left"></i>
+        谢谢大爷~
+        <i class="icon icon-quote-right"></i>
+    </h3>
+    <ul class="reward-items">
+        
+        <li>
+            <img src="/img/wechat.jpg" title="微信打赏二维码" alt="微信打赏二维码">
+            <p>微信</p>
+        </li>
+        
+
+        
+        <li>
+            <img src="/img/alipay.jpg" title="支付宝打赏二维码" alt="支付宝打赏二维码">
+            <p>支付宝</p>
+        </li>
+        
+    </ul>
+</div>
+
+
+
+</div>
+
+        <footer class="footer">
+    <div class="top">
+        
+<p>
+    <span id="busuanzi_container_site_uv" style='display:none'>
+        站点总访客数：<span id="busuanzi_value_site_uv"></span>
+    </span>
+    <span id="busuanzi_container_site_pv" style='display:none'>
+        站点总访问量：<span id="busuanzi_value_site_pv"></span>
+    </span>
+</p>
+
+
+        <p>
+            <span><a href="/atom.xml" target="_blank" class="rss" title="rss"><i class="icon icon-lg icon-rss"></i></a></span>
+            <span>博客内容遵循 <a href="http://creativecommons.org/licenses/by-nc-sa/4.0/" target="_blank">知识共享 署名 - 非商业性 - 相同方式共享 4.0协议</a></span>
+        </p>
+    </div>
+    <div class="bottom">
+        <p>
+            <span>Power by <a href="http://hexo.io/" target="_blank">Hexo</a> Theme <a href="https://github.com/yscoder/hexo-theme-indigo" target="_blank">indigo</a></span>
+            <span>Hexo &copy; 2017</span>
+        </p>
+    </div>
+</footer>
+
+    </main>
+    <div class="mask" id="mask"></div>
+<a href="javascript:;" id="gotop" class="waves-effect waves-circle waves-light"><span class="icon icon-lg icon-chevron-up"></span></a>
+
+
+
+<div class="global-share" id="globalShare">
+    <ul class="reset share-icons">
+      <li>
+        <a class="weibo share-sns" target="_blank" href="http://service.weibo.com/share/share.php?url=http://wangxue.github.io/2017/03/30/jni的基本用法/&title=《jni的基本用法》 — Hexo&pic=http://wangxue.github.io/img/avatar.jpg" data-title="微博">
+          <i class="icon icon-weibo"></i>
+        </a>
+      </li>
+      <li>
+        <a class="weixin share-sns wxFab" href="javascript:;" data-title="微信">
+          <i class="icon icon-weixin"></i>
+        </a>
+      </li>
+      <li>
+        <a class="qq share-sns" target="_blank" href="http://connect.qq.com/widget/shareqq/index.html?url=http://wangxue.github.io/2017/03/30/jni的基本用法/&title=《jni的基本用法》 — Hexo&source=" data-title=" QQ">
+          <i class="icon icon-qq"></i>
+        </a>
+      </li>
+      <li>
+        <a class="facebook share-sns" target="_blank" href="https://www.facebook.com/sharer/sharer.php?u=http://wangxue.github.io/2017/03/30/jni的基本用法/" data-title=" Facebook">
+          <i class="icon icon-facebook"></i>
+        </a>
+      </li>
+      <li>
+        <a class="twitter share-sns" target="_blank" href="https://twitter.com/intent/tweet?text=《jni的基本用法》 — Hexo&url=http://wangxue.github.io/2017/03/30/jni的基本用法/&via=http://wangxue.github.io" data-title=" Twitter">
+          <i class="icon icon-twitter"></i>
+        </a>
+      </li>
+      <li>
+        <a class="google share-sns" target="_blank" href="https://plus.google.com/share?url=http://wangxue.github.io/2017/03/30/jni的基本用法/" data-title=" Google+">
+          <i class="icon icon-google-plus"></i>
+        </a>
+      </li>
+    </ul>
+ </div>
+
+
+<div class="page-modal wx-share" id="wxShare">
+    <a class="close" href="javascript:;"><i class="icon icon-close"></i></a>
+    <p>扫一扫，分享到微信</p>
+    <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMYAAADGCAAAAACs8KCBAAACJElEQVR42u3aMW7DMAwF0Nz/0unSoQUa5ZN0Ckh+noLWMfU8MKSoxyO+nj+u9X9fXev7kygXXBgYGNsykvDP4tWLVY2LgYFxN8arkOt78vurLyVfGwYGBsZ6WevCbr2sNQwDAwPjKsY8HfeejIGBcU9GXqLlYa761sW9OAYGxoaMfNf9/z9/ZL6BgYGxFWOy3T9PyvP1fD8ZAwPjaEa1BV03nMmd+cCyvB4MDIyjGfm2fh6sevyi+lIKPgwMjM0ZeYBy4gtI88+/KlwMDIyjGZMjXNUjFMkBi/IvBgYGxtGMXnK8NkF/IgoGBsZ5jPzIadJq5suaHGzFwMC4D6M3sJynyLwkjfAYGBhHM6opuBdm3somPwwYGBh3Y0zay4TXK0lHs1kMDIxtGXlR2GtK89FmXjL+8RcMDIzbMPIt+F6LWx1Y5k/DwMA4m1FtFKuN6DO+8iFEuZLFwMA4gjEp9aqtaVKS5gVlc7sNAwNjQ0a1cZ2MMyfHLN7EwsDAuAEjycfVhfYGkB/cO8TAwNicUU2vecj8BY0aWgwMjBswqpvy1eQ4LyvffAsDA+NQxrN4JSm7d9giHzNED8LAwDiIUZ0DTo6R9V5Krw3GwMA4j1E9BjFveqsDTgwMDIxkDFA9MNFbVi/1Y2BgYORFXr65X03x0XgAAwMDYxKgGKU5EMXAwLgBI0l/8/TaO/CRjDMxMDDOZuSt43wRk7HBBUNNDAyM/Rhf0SMD8cgxYewAAAAASUVORK5CYII=" alt="微信分享二维码">
+</div>
+
+
+
+
+    <script src="//cdn.bootcss.com/node-waves/0.7.4/waves.min.js"></script>
+<script>
+var BLOG = { ROOT: '/', SHARE: true, REWARD: true };
+
+
+
+</script>
+
+<script src="/js/main.min.js?v=1.4.14"></script>
+
+
+<div class="search-panel" id="search-panel">
+    <ul class="search-result" id="search-result"></ul>
+</div>
+<template id="search-tpl">
+<li class="item">
+    <a href="{path}" class="waves-block waves-effect">
+        <div class="title ellipsis" title="{title}">{title}</div>
+        <div class="flex-row flex-middle">
+            <div class="tags ellipsis">
+                {tags}
+            </div>
+            <time class="flex-col time">{date}</time>
+        </div>
+    </a>
+</li>
+</template>
+
+<script src="/js/search.min.js?v=1.4.14" async></script>
+
+
+
+
+
+
+<script async src="//dn-lbstatics.qbox.me/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+
+
+<script>
+(function() {
+    var OriginTitile = document.title, titleTime;
+    document.addEventListener('visibilitychange', function() {
+        if (document.hidden) {
+            document.title = '死鬼去哪里了！';
+            clearTimeout(titleTime);
+        } else {
+            document.title = '(つェ⊂)咦!又好了!';
+            titleTime = setTimeout(function() {
+                document.title = OriginTitile;
+            },2000);
+        }
+    });
+})();
+</script>
+
+
+
+</body>
+</html>
