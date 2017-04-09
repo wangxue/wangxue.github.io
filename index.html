@@ -148,6 +148,50 @@
     <ul class="post-list">
     
         <li class="post-list-item fade">
+            <article id="post-支付时签名验签"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017年04月09日 18:38" datetime="2017-04-09T10:38:43.000Z"  itemprop="datePublished">2017-04-09</time>
+
+        
+	<ul class="article-category-list"><li class="article-category-list-item"><a class="article-category-list-link" href="/categories/security/">security</a></li></ul>
+
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/04/09/支付时签名验签/">支付时签名验签</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        在网络通信过程中，为防止信息被篡改，通常使用https协议。不过fiddler等软件一样可以通过中间人攻击截取信息，目前常规做法开发者将公钥上传到开放平台，然后用私钥对请求内容生成签名sign，请求内容和sign一起发送到对方，对方收到信息后进行验签，判断内容是否经过篡改。
+以支付宝的api为例，统一收单线下交易查询在公共请求参数中有一个sign字段，该字段即为使用私钥对拼接的请求参数进行签...
+    
+
+        <a href="/2017/04/09/支付时签名验签/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
             <article id="post-桌面插件"
   class="article-card article-type-post" itemprop="blogPost">
 
@@ -231,6 +275,62 @@
     
 
         <a href="/2017/03/30/jni的基本用法/" class="post-more waves-effect waves-button">
+            阅读全文...
+        </a>
+    </div>
+    
+</article>
+
+        </li>
+    
+        <li class="post-list-item fade">
+            <article id="post-pull-apk"
+  class="article-card article-type-post" itemprop="blogPost">
+
+    <div class="post-meta">
+        <time class="post-time" title="2017年03月28日 21:31" datetime="2017-03-28T13:31:33.438Z"  itemprop="datePublished">2017-03-28</time>
+
+        
+
+
+        
+
+    </div>
+
+    
+
+
+  
+    <h3 class="post-title" itemprop="name">
+      <a class="post-title-link" href="/2017/03/28/pull-apk/">提取android手机中apk文件</a>
+    </h3>
+  
+
+
+
+
+    <div class="post-content" id="post-content" itemprop="postContent">
+
+    
+        参考http://stackoverflow.com/a/11013175
+
+获取包名
+adb shell pm list packages
+
+
+获取包路径
+adb shell pm path ‘package-name’
+
+
+获取包
+adb pull ‘package-name’ package-name.apk
+
+
+
+
+    
+
+        <a href="/2017/03/28/pull-apk/" class="post-more waves-effect waves-button">
             阅读全文...
         </a>
     </div>
